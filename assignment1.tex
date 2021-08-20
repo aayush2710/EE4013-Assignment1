@@ -130,32 +130,36 @@ https://github.com/aayush2710/EE4013-Assignment1
 \section{Problem}
 Consider the following Recurrence Relation
 \begin{multline}
-  T(n) =
+  T\brak{n} =
   \begin{cases}
-  T(n/2) + T(2n/5) + 7n & \text{if } n>0 \\
+  T\brak{n/2} + T\brak{2n/5} + 7n & \text{if } n>0 \\
   1 & \text{if } n=0
   \end{cases}
 \end{multline}
 
 Which one of the following options is correct?
 \begin{enumerate}
-    \item $T(n) = \mathcal{O}(n^{\frac{5}{2}})$
-    \item $T(n) = \mathcal{O}(n\log n)$
-    \item $T(n) = \mathcal{O}(n)$
-    \item $T(n) = \mathcal{O}((\log n)^{\frac{5}{2}})$
+    \item $T\brak{n} = \mathcal{O}\brak{n^{\frac{5}{2}}}$
+    \item $T\brak{n} = \mathcal{O}\brak{n\log n}$
+    \item $T\brak{n} = \mathcal{O}\brak{n}$
+    \item $T\brak{n} = \mathcal{O}\brak{\brak{\log n}^{\frac{5}{2}}}$
 \end{enumerate}
 \section{Solution}
-We need to calculate the worst case time complexity of the given recurrence relation.
+Let us start by drawing the recurrence tree for the given problem. We can calculate the complexity of each level by summing up the complexity of each node at that level.\\ For Example : At L1, complexity is \\
+$7\brak{\dfrac{n}{2}} + 7\brak{\dfrac{2n}{5}} = 7\brak{\dfrac{9n}{10}}$
 \\
-Let us start by drawing the recurrence tree for the given problem. 
-\\
+
 \begin{figure}[!h]
 \centering
-\begin{tikzpicture}[level/.style={sibling distance=35mm/#1}]
+\begin{tikzpicture}[level/.style={sibling distance=30mm/#1}]
 \node [circle,draw] (z){$7n$}
   child {node [circle,draw] (a) {$7(\frac{n}{2})$}
     child {node [circle,draw] (b) {$7(\frac{n}{2^2})$}
       child {node {$\vdots$}
+      child [grow=left, xshift=0.8cm] {node (r) {} edge from parent[draw=none]
+      child [grow=up] {node (s) {L2} edge from parent[draw=none]
+      child [grow=up] {node (t) {L1} edge from parent[draw=none]
+      child [grow=up] {node (t) {L0} edge from parent[draw=none]}}}}
       } 
       child {node {$\vdots$}}
     }
@@ -187,38 +191,47 @@ Let us start by drawing the recurrence tree for the given problem.
 \caption{Recurrence Tree} \label{fig:M1}
 \end{figure}
 
-Since, $\dfrac{n}{2}>\dfrac{2n}{5}$, So, the height of the rightmost subtree will determine the lower bound of the given recurrence, and the height of the leftmost subtree will determine the upper bound of the given recurrence.
+Length of left most subtree $=\log_{2}n$\\
+Length of right most subtree $=\log_{5/2}n$\\
+Rightmost subtree is shortest so it determines the lower bound of time. Whereas the leftmost subtree is the longest, hence it determies the upper bound of time.
+
 
 Height of the leftmost subtree is : $\log_{2}n $ and so
 
 \begin{align}
-    T(n) &\leqslant 7n + 7(\frac{9}{10})n + 7(\frac{9}{10})^2 n + \dots + 7(\frac{9}{10})^{\log_{2}n} n \\
-    T(n) &\leqslant 7n(1 + \frac{9}{10} + 7(\frac{9}{10})^2 + \dots + 7(\frac{9}{10})^{\log_{2}n}) \\
-    T(n) &\leqslant 7n\dfrac{1-(\frac{9}{10})^{\log_{2} n + 1}}{1-\frac{9}{10}} \\
-    T(n) &\leqslant 70n - 70n(n^{\log_{2}\frac{9}{10}} \frac{9}{10}) \\
-    &= 70n - 63n^{0.85} \\
-    \implies T(n) &\leqslant 70n\\
-    \implies T(n) &\in \mathcal{O}(n)
+T\brak{n} &\leqslant 7n + 7n\brak{\frac{9}{10}} + 7n\brak{\frac{9}{10}}^2  + \dots + 7n\brak{\frac{9}{10}}^{\log_{2}n} \\
+T\brak{n} &\leqslant 7n\brak{1 + \frac{9}{10} + 7\brak{\frac{9}{10}}^2 + \dots + 7\brak{\frac{9}{10}}^{\log_{2}n}} \\
+T\brak{n} &\leqslant 7n\dfrac{1-\brak{\dfrac{9}{10}}^{\log_{2} n + 1}}{1-\dfrac{9}{10}} \\
+T\brak{n} &\leqslant 70n - 70\brak{\frac{9}{10}}\brak{n^{\log_{2}\brak{\frac{9}{10}}} } \\
+&= 70n - 63n^{0.85}
+\end{align}
+\begin{flalign}
+&\implies T\brak{n} \leqslant 70n & \\
+&\implies T\brak{n} \in \mathcal{O}\brak{n}&
+\end{flalign}
+
+Height of the rightmost subtree is $log_{_{5/2}}n$ and so,
+
+\begin{align}
+T\brak{n} &\geqslant 7n + 7n\brak{\frac{9}{10}} + 7n\brak{\frac{9}{10}}^2 + \dots + 7n\brak{\frac{9}{10}}^{\log_{5/2}n}\\
+T\brak{n} &\geqslant 7n\brak{1 + \frac{9}{10} + 7\brak{\frac{9}{10}}^2 + \dots + 7\brak{\frac{9}{10}}^{\log_{5/2}n}} \\
+T\brak{n} &\geqslant 7n\dfrac{1-\brak{\dfrac{9}{10}}^{\brak{\log_{5/2}n} + 1}}{1-\dfrac{9}{10}}
+\end{align}
+\begin{align}
+T\brak{n} &\geqslant 70n - 70\brak{\frac{9}{10}}\brak{n^{\log_{5/2} \brak{\frac{9}{10}}}} \\
+&= 70n - 63n^{0.89} \\
+T\brak{n} &\geqslant n\brak{70 - \frac{63}{n^{0.11}}}
 \end{align}
 
-Height of the rightmost subtree is :$log_{5/2}n$ and so,
-\begin{align}
-    T(n) &\geqslant 7n + 7(\frac{9}{10})n + 7(\frac{9}{10})^2 n + \dots + 7(\frac{9}{10})^{\log_{5/2}n} n \\
-    T(n) &\geqslant 7n(1 + \frac{9}{10} + 7(\frac{9}{10})^2 + \dots + 7(\frac{9}{10})^{\log_{5/2}n}) \\
-    T(n) &\geqslant 7n\dfrac{1-(\frac{9}{10})^{\log_{5/2} n + 1}}{1-\frac{9}{10}} \\
-    T(n) &\geqslant 70n - 70n(n^{\log_{5/2}\frac{9}{10}} \frac{9}{10}) \\
-    &= 70n - 63n^{0.89} \\
-    T(n) &\geqslant n(70 - \frac{63}{n^{0.11}})
-\end{align}
 Since we consider complexity for large n,
-$\lim_{n \to \infty} \frac{63}{n^{0.11}} = 0$
-So $T(n) \geqslant 70n$
+$\lim_{n \to \infty} \dfrac{63}{n^{0.11}} = 0$
+So $T\brak{n} \geqslant 70n$
 
 \section{Answer}
-\begin{align}
-\bullet T(n) \in \mathcal{O}(n) \\
-\bullet T(n) \sim 70n
-\end{align}
+\begin{flalign}
+&\bullet T\brak{n} \in \mathcal{O}\brak{n}& \\
+&\bullet T\brak{n} \sim 70n &
+\end{flalign}
 Hence option 3 is correct
 
 \section{Verification}
@@ -228,12 +241,12 @@ Here is the plot
 \begin{figure}[!h]
     \centering
     \includegraphics[scale=0.6]{figs/plot.eps}
-    \caption{T(n) vs n}
+    \caption{T\brak{n} vs n}
     \label{fig:verification}
 \end{figure}
 
 We can clearly observe a linear curve. This verifies that 
-$T(n) \in \mathcal{O}(n)$
+$T\brak{n} \in \mathcal{O}\brak{n}$
 \\
 \\
 This plot can be generated through the following python script
@@ -241,3 +254,4 @@ This plot can be generated through the following python script
 https://github.com/aayush2710/EE4013-Assignment1/code/verification.py
 \end{lstlisting}
 \end{document}
+
