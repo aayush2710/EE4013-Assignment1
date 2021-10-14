@@ -235,18 +235,38 @@ So $T\brak{n} \geqslant 70n$
 Hence option 3 is correct
 
 \section{Verification}
-To verify the theoretical results, I constructed a recursive function with given recurrence relation and measure the execution time for different n.
+To verify the theoretical results, I constructed a recursive function in C with given recurrence relation and measure the execution time for different n.
 
-Here is the plot
+The time taken was plotted using python with varying n, Here is the plot
+
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.6]{figs/plot.eps}
+    \includegraphics[scale=0.55]{figs/plot.eps}
     \caption{T\brak{n} vs n}
     \label{fig:verification}
 \end{figure}
-
+\\
 We can clearly observe a linear curve. This verifies that 
 $T\brak{n} \in \mathcal{O}\brak{n}$
+\\
+\\
+Here is the recursive function used
+\\
+\\
+\\ \\
+\begin{lstlisting}
+void recursive(int n) {
+    if(n == 0) {
+      return;
+    }
+    long long int Sum = 0;
+    for(int i=0;i<7*n;i++){ 
+        Sum+=i;
+    }
+    recursive(n/2);
+    recursive(2*n/5);
+}
+\end{lstlisting}
 \\
 \\
 This plot can be generated through the following python script
@@ -254,4 +274,3 @@ This plot can be generated through the following python script
 https://github.com/aayush2710/EE4013-Assignment1/code/verification.py
 \end{lstlisting}
 \end{document}
-
